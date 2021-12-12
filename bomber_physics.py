@@ -1,6 +1,4 @@
-#physics model for bomber
 import math
-
 import bomber_objects
 
 
@@ -18,7 +16,8 @@ def bombcheck(bombs, ground):
     bomb_new = []
     for j in range(len(bombs)):
         for i in range(len(ground.points) - 1):
-            if ground.points[i][0] < bombs[j].x and ground.points[i+1][0] > bombs[j].x and (ground.points[i][1] < bombs[j].y or ground.points[i + 1][1] < bombs[j].y):
+            if ground.points[i][0] < bombs[j].x < ground.points[i + 1][0] and (
+                    ground.points[i][1] < bombs[j].y or ground.points[i + 1][1] < bombs[j].y):
                 print(i)
                 if ground.points[i][0] - bombs[j].x < ground.points[i + 1][0] - bombs[j].x:
                     ground.points[i][1] += 5
@@ -76,7 +75,8 @@ def enemy_move(enemies, ground, bombs):
         if enemies_new[i].v < 0:
             for j in range(len(ground.points) - 1, 0, -1):
                 if ground.points[j][0] < enemies_new[i].x and flag == 0:
-                    k = math.fabs(v_lasts / math.hypot(ground.points[j][0] - enemies_new[i].x, ground.points[j][1] - enemies_new[i].y))
+                    k = math.fabs(v_lasts / math.hypot(ground.points[j][0] - enemies_new[i].x,
+                                                       ground.points[j][1] - enemies_new[i].y))
                     if k < 1:
                         enemies_new[i].x += (ground.points[j][0] - enemies_new[i].x) * k
                         enemies_new[i].y += (ground.points[j][1] - enemies_new[i].y) * k

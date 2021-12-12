@@ -14,6 +14,8 @@ class Plane:
     def speed_recalculation(self, event):
         self.vx = self.v * math.sin(math.atan2(event.pos[0] - self.x, event.pos[1] - self.y))
         self.vy = self.v * math.cos(math.atan2(event.pos[0] - self.x, event.pos[1] - self.y))
+
+
 class Ground:
     points = []
     color = 'GREEN'
@@ -45,5 +47,5 @@ class Enemy:
 
 class Tank(Enemy):
     health = 1000
-    hitbox = 10
+    hitbox = 20
     v = 1
