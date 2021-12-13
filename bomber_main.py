@@ -24,14 +24,19 @@ ground = Ground()
 ground.points.append([0, screen.get_height()])
 print(ground.points)
 for i in range(GROUND_NUMOFPOINTS):
-    ground.points.append([screen.get_width()*i/(GROUND_NUMOFPOINTS - 1) , 600 - random.randint(75, 100)])
+    ground.points.append([screen.get_width()*i/(GROUND_NUMOFPOINTS - 1), 600 - random.randint(75, 100)])
 ground.points.append([screen.get_width(), screen.get_height()])
 print(ground.points)
 clock = pygame.time.Clock()
 finished = False
-newTank = Tank(ground.points[2][0], ground.points[2][1])
-enemies.append(newTank)
+hardness = 3
+for i in range(hardness):
+    pos = random.randint(3, GROUND_NUMOFPOINTS - 3)
+    newTank = Tank(ground.points[pos][0], ground.points[pos][1])
+    enemies.append(newTank)
 bomber_menu.show_menu()
+pygame.mixer.music.load('bombersong.mp3')
+pygame.mixer.music.play(-1)
 while not finished:
     clock.tick(FPS)
     for event in pygame.event.get():
@@ -48,8 +53,8 @@ while not finished:
     bombs, enemies = bomber_physics.enemy_move(enemies, ground, bombs, bomber)
     for enemy in enemies:
         if enemy.cd < 0:
-            bombs.append(enemies[0].fire(bomber))
-            enemy.cd = 0
+            bombs.append(enemy.fire(bomber))
+            enemy.cd = enemy.reloading_time
         else:
             enemy.cd -= 1
 pygame.quit()

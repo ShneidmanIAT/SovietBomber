@@ -9,7 +9,6 @@ class Plane:
     vx = 1
     vy = 0
     v = 1
-    bombs = 1
     force = 1
     hitbox = 10
     health = 1000
@@ -26,6 +25,7 @@ class Plane:
         if self.vx < 0:
             img = pygame.transform.flip(img, False, True)
         return img
+
 
 class Ground:
     points = []
@@ -87,6 +87,7 @@ class Enemy:
     x = 0
     y = 0
     v = 0
+    reloading_time = 100
     cd = 10
     hitbox = 0
     img = pygame.image.load('Tank.png')
@@ -130,8 +131,11 @@ class Enemy:
         shot.enemy = True
         return shot
 
+
 class Tank(Enemy):
     health = 50
     hitbox = 20
     v = 1
+
+
 
