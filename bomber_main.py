@@ -44,5 +44,11 @@ while not finished:
     bomber_rendering.draw_to_screen(bomber, bombs, ground, enemies, screen)
     bomber_physics.flight(bomber, bombs)
     bombs, ground = bomber_physics.bombcheck(bombs, ground)
-    bombs, enemies = bomber_physics.enemy_move(enemies, ground, bombs)
+    bombs, enemies = bomber_physics.enemy_move(enemies, ground, bombs, bomber)
+    for enemy in enemies:
+        if enemy.cd < 0:
+            bombs.append(enemies[0].fire(bomber))
+            enemy.cd = 0
+        else:
+            enemy.cd -= 1
 pygame.quit()

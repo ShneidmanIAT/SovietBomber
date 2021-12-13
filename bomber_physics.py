@@ -26,16 +26,22 @@ def bombcheck(bombs, ground):
     return bomb_new, ground
 
 
-def enemy_move(enemies, ground, bombs):
+def enemy_move(enemies, ground, bombs, bomber):
     todel_bombs = []
-    todel_enemies= []
+    todel_enemies = []
     enemies_new = []
     bombs_new = []
+    for i in range(len(bombs)):
+        detonated = bombs[i].planecheck(bomber)
+        if detonated:
+            todel_bombs.append(i)
     for i in range(len(enemies)):
         for j in range(len(bombs)):
-            if bombs[j].enemycheck(enemies[i]):
+            detonated, enemies[i] = bombs[j].enemycheck(enemies[i])
+            if detonated:
                 todel_bombs.append(j)
-                todel_enemies.append(i)
+                if enemies[i].health < 0:
+                    todel_enemies.append(i)
     for i in range(len(enemies)):
         if i in todel_enemies:
             pass

@@ -1,5 +1,6 @@
 import math
 import random
+import pygame
 
 
 class Plane:
@@ -10,11 +11,21 @@ class Plane:
     v = 1
     bombs = 1
     force = 1
+    hitbox = 10
+    health = 1000
+    img = pygame.image.load('bomber.png')
+    img.set_colorkey((255, 255, 255))
+    img = pygame.transform.scale(img, (60, 20))
 
     def speed_recalculation(self, event):
         self.vx = self.v * math.sin(math.atan2(event.pos[0] - self.x, event.pos[1] - self.y))
         self.vy = self.v * math.cos(math.atan2(event.pos[0] - self.x, event.pos[1] - self.y))
 
+    def get_real_image(self):
+        img = pygame.transform.rotate(self.img, -self.vx/math.fabs(self.vx)*180*math.atan2(self.vy, self.vx)/math.pi)
+        if self.vx < 0:
+            img = pygame.transform.flip(img, False, True)
+        return img
 
 class Ground:
     points = []
@@ -32,6 +43,7 @@ class Bomb:
     vx = 0
     vy = 0
     damage = 100
+    enemy = False
 
     def groundcheck(self, ground):
         detonated = False
@@ -46,10 +58,16 @@ class Bomb:
         return ground, detonated
 
     def enemycheck(self, enemy):
-        return math.hypot(self.x - enemy.x, self.y - enemy.y) < enemy.hitbox
+        detonated = math.hypot(self.x - enemy.x, self.y - enemy.y) < enemy.hitbox and not self.enemy
+        if detonated:
+            enemy.health -= self.damage
+        return detonated, enemy
 
-
-
+    def planecheck(self, plane):
+        detonated = math.hypot(self.x - plane.x, self.y - plane.y) < plane.hitbox and self.enemy
+        if detonated:
+            plane.health -= self.damage
+        return detonated
 
 class Enemy:
     def __init__(self, x, y):
@@ -59,6 +77,7 @@ class Enemy:
     x = 0
     y = 0
     v = 0
+    cd = 10
     hitbox = 0
 
     def moveforward(self, ground):
@@ -92,8 +111,14 @@ class Enemy:
                         self.y = ground.points[j][1]
                     flag = 1
 
+    def fire(self, plane):
+        d = math.hypot(plane.x - self.x, plane.y - self.y)
+        shot = Bomb(self.x, self.y, 10*(plane.x - self.x)/d, 10*(plane.y - self.y)/d)
+        shot.enemy = True
+        return shot
 
 class Tank(Enemy):
-    health = 1000
+    health = 50
     hitbox = 20
     v = 1
+
