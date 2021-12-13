@@ -4,6 +4,7 @@ import pygame
 from bomber_objects import Plane, Ground, Bomb, Tank
 import bomber_rendering
 import bomber_physics
+import bomber_menu
 
 
 FPS = 30
@@ -30,7 +31,7 @@ clock = pygame.time.Clock()
 finished = False
 newTank = Tank(ground.points[2][0], ground.points[2][1])
 enemies.append(newTank)
-
+bomber_menu.show_menu()
 while not finished:
     clock.tick(FPS)
     for event in pygame.event.get():

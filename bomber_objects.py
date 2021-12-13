@@ -6,7 +6,7 @@ import pygame
 class Plane:
     x = 0
     y = 0
-    vx = 0
+    vx = 1
     vy = 0
     v = 1
     bombs = 1
@@ -44,6 +44,9 @@ class Bomb:
     vy = 0
     damage = 100
     enemy = False
+    img = pygame.image.load('bomb.png')
+    img.set_colorkey((255, 255, 255))
+    img = pygame.transform.scale(img, (60, 20))
 
     def groundcheck(self, ground):
         detonated = False
@@ -57,6 +60,12 @@ class Bomb:
                     ground.points[i + 1][1] += 5
         return ground, detonated
 
+    def get_real_image(self):
+        img = pygame.transform.rotate(self.img, -self.vx/math.fabs(self.vx)*180*math.atan2(self.vy, self.vx)/math.pi)
+        if self.vx < 0:
+            img = pygame.transform.flip(img, False, True)
+        return img
+
     def enemycheck(self, enemy):
         detonated = math.hypot(self.x - enemy.x, self.y - enemy.y) < enemy.hitbox and not self.enemy
         if detonated:
@@ -69,6 +78,7 @@ class Bomb:
             plane.health -= self.damage
         return detonated
 
+
 class Enemy:
     def __init__(self, x, y):
         self.x = x
@@ -79,6 +89,9 @@ class Enemy:
     v = 0
     cd = 10
     hitbox = 0
+    img = pygame.image.load('Tank.png')
+    img.set_colorkey((255, 255, 255))
+    img = pygame.transform.scale(img, (60, 20))
 
     def moveforward(self, ground):
         if self.x >= ground.points[len(ground.points) - 1][0] - 1 and self.v > 0:
