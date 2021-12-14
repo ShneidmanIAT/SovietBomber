@@ -8,8 +8,7 @@ class Plane:
     y = 0
     vx = 1
     vy = 0
-    v = 1
-    force = 1
+    v = 5
     hitbox = 10
     health = 1000
     img = pygame.image.load('bomber.png')
@@ -30,6 +29,24 @@ class Plane:
 class Ground:
     points = []
     color = 'GREEN'
+
+    def new_ground(self, width, height, numofpoints):
+        self.points = []
+        self.points.append([0, height])
+        for i in range(numofpoints):
+            self.points.append([width * i / (numofpoints - 1), height - random.randint(75, 100)])
+        self.points.append([width, height])
+
+    def add_enemies(self, hardness, numofpoints, enemies):
+        for i in range(hardness):
+            pos = random.randint(3, numofpoints - 3)
+            newtank = Tank(self.points[pos][0], self.points[pos][1])
+            enemies.append(newtank)
+        for i in range(hardness):
+            pos = random.randint(3, numofpoints - 3)
+            newtank = Tank(self.points[pos][0], self.points[pos][1])
+            enemies.append(newtank)
+        return enemies
 
 
 class Bomb:
