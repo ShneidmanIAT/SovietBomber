@@ -8,7 +8,9 @@ class Plane:
     y = 0
     vx = 1
     vy = 0
-    v = 5
+    v = 0
+    score = 0
+    vstart = 5
     hitbox = 10
     health = 1000
     img = pygame.image.load('bomber.png')
@@ -20,7 +22,7 @@ class Plane:
         self.vy = self.v * math.cos(math.atan2(event.pos[0] - self.x, event.pos[1] - self.y))
 
     def get_real_image(self):
-        img = pygame.transform.rotate(self.img, -self.vx/math.fabs(self.vx)*180*math.atan2(self.vy, self.vx)/math.pi)
+        img = pygame.transform.rotate(self.img, -self.vx/math.fabs(self.vx + 0.00001)*180*math.atan2(self.vy, self.vx)/math.pi)
         if self.vx < 0:
             img = pygame.transform.flip(img, False, True)
         return img
@@ -93,7 +95,7 @@ class Bomb:
         detonated = math.hypot(self.x - plane.x, self.y - plane.y) < plane.hitbox and self.enemy
         if detonated:
             plane.health -= self.damage
-        return detonated
+        return detonated, plane
 
 
 class Enemy:

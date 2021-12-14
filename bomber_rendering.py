@@ -2,7 +2,7 @@ import pygame
 import bomber_objects
 
 
-def draw_to_screen(bomber, bombs, ground, enemies, screen):
+def draw_objects_to_screen(bomber, bombs, ground, enemies, screen):
     screen.fill('BLUE')
     screen.blit(bomber.get_real_image(), (bomber.x - bomber.get_real_image().get_width()/2,
                                           bomber.y - bomber.get_real_image().get_height()/2))
@@ -17,4 +17,19 @@ def draw_to_screen(bomber, bombs, ground, enemies, screen):
     for enemy in enemies:
         screen.blit(enemy.img, (enemy.x - enemy.img.get_width() / 2,
                                 enemy.y - enemy.img.get_height()))
-    pygame.display.update()
+
+
+
+def draw_text_to_screen(screen, health, score, lost, timer):
+    pygame.font.init()
+    myfont = pygame.font.SysFont('Comic Sans MS', 30)
+    scoresurf = myfont.render('Score:' + str(score), False, (0, 0, 0))
+    screen.blit(scoresurf, (0, 0))
+    healthsurf = myfont.render('HEALTH:' + str(health), False, 'RED')
+    screen.blit(healthsurf, (screen.get_width() - 200, 0))
+    if not lost and timer < 99:
+        endlevelsurf = myfont.render('Well done!', False, (0, 0, 0))
+        screen.blit(endlevelsurf, (screen.get_width()/2 - 50, screen.get_height()/2 - 50))
+    if lost:
+        deathsurf = myfont.render('You died', False, (0, 0, 0))
+        screen.blit(deathsurf, (screen.get_width()/2 - 50, screen.get_height()/2 - 50))
