@@ -11,7 +11,7 @@ class Plane:
     v = 0
     score = 0
     vstart = 5
-    hitbox = 10
+    hitbox = 20
     health = 1000
     img = pygame.image.load('bomber.png')
     img.set_colorkey((255, 255, 255))
