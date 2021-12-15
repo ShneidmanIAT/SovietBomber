@@ -31,12 +31,15 @@ class Plane:
 class Ground:
     points = []
     color = 'GREEN'
+    groundline = 75
+    groundheight = 25
 
     def new_ground(self, width, height, numofpoints):
         self.points = []
         self.points.append([0, height])
         for i in range(numofpoints):
-            self.points.append([width * i / (numofpoints - 1), height - random.randint(75, 100)])
+            self.points.append([width * i / (numofpoints - 1), height -
+                                random.randint(self.groundline, self.groundline + self.groundheight)])
         self.points.append([width, height])
 
     def add_enemies(self, hardness, numofpoints, enemies):

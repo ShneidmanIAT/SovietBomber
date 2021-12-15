@@ -55,6 +55,8 @@ while not finished:
         bombs, ground = bomber_physics.bombcheck(bombs, ground)
         bombs, enemies, bomber = bomber_physics.killcheck(enemies, ground, bombs, bomber)
         bomber_rendering.draw_text_to_screen(screen, bomber.health, bomber.score, lost, timer)
+        if bomber.y > screen.get_height() - ground.groundline:
+            bomber.health = -1
         pygame.display.update()
         for enemy in enemies:
             if enemy.cd < 0:
