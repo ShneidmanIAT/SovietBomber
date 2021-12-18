@@ -78,6 +78,7 @@ def show_menu():
                 quit()
         display.blit(menu_bckgr, (0, 0))
         if start_btn.draw(50, 150, 'START')==3:
+            return 1
             show = False
         if settings_btn.draw(50, 200, 'SETTINGS') == 0:
             if show_settings()==3:
@@ -90,7 +91,7 @@ def show_menu():
 
         pygame.display.update()
         clock.tick(60)
-
+show_menu()
 
 
 
