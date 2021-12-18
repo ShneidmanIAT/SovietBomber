@@ -20,7 +20,7 @@ pygame.mixer.music.load('bombersong.mp3')
 finished = False
 endlevel = False
 bomber = Plane()
-hardness = 3
+enemies_amount = 1
 while not finished:
     timer = 100
     bombs = []
@@ -28,10 +28,11 @@ while not finished:
     ground = Ground()
     ground.new_ground(screen.get_width(), screen.get_height(), GROUND_NUMOFPOINTS)
     clock = pygame.time.Clock()
-    enemies = ground.add_enemies(hardness, GROUND_NUMOFPOINTS, enemies)
+    enemies = ground.add_enemies(enemies_amount, GROUND_NUMOFPOINTS, enemies)
     if lost:
         pygame.mixer.music.stop()
-        bomber_menu.show_menu()
+        hardness = bomber_menu.show_menu()
+        print(hardness)
         pygame.mixer.music.play(-1)
         lost = False
         bomber.score = 0
@@ -68,7 +69,7 @@ while not finished:
             timer -= 1
             if timer == 0:
                 endlevel = True
-                hardness += 2
+                enemies_amount += hardness
         if bomber.health < 0:
             bomber.v = 0
             lost = True

@@ -42,12 +42,8 @@ class Ground:
                                 random.randint(self.groundline, self.groundline + self.groundheight)])
         self.points.append([width, height])
 
-    def add_enemies(self, hardness, numofpoints, enemies):
-        for i in range(hardness):
-            pos = random.randint(3, numofpoints - 3)
-            newtank = Tank(self.points[pos][0], self.points[pos][1])
-            enemies.append(newtank)
-        for i in range(hardness):
+    def add_enemies(self, amount, numofpoints, enemies):
+        for i in range(amount):
             pos = random.randint(3, numofpoints - 3)
             newtank = Tank(self.points[pos][0], self.points[pos][1])
             enemies.append(newtank)
