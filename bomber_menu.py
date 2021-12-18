@@ -91,7 +91,7 @@ def show_menu():
 
         pygame.display.update()
         clock.tick(60)
-show_menu()
+
 
 
 
