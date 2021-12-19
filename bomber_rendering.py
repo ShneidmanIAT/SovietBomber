@@ -19,8 +19,8 @@ def draw_objects_to_screen(bomber, bombs, ground, enemies, screen):
                                 enemy.y - enemy.img.get_height()))
 
 
-
 def draw_text_to_screen(screen, health, score, lost, timer):
+    """draws health, score and information to the screen"""
     pygame.font.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
     scoresurf = myfont.render('Score:' + str(score), False, (0, 0, 0))

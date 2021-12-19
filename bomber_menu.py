@@ -22,8 +22,6 @@ class Button:
         self.clr = (23, 204, 58)
         self.type = type
 
-
-
     def draw(self, x, y, message):
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
@@ -56,18 +54,15 @@ def show_settings():
         if hard_btn.draw(50, 50, 'HARD') == 1:
             return 3
             show_set = False
-
         if veryhard_btn.draw(50, 100, 'VERY HARD') == 2:
             return 4
             show_set = False
-
         pygame.display.update()
         clock.tick(60)
 
 
 def show_menu():
     menu_bckgr = pygame.image.load('menu.png')
-
     start_btn = Button(100, 50, 'start')
     settings_btn = Button(140, 50, 'settings')
     show = True
@@ -77,18 +72,13 @@ def show_menu():
                 pygame.quit()
                 quit()
         display.blit(menu_bckgr, (0, 0))
-        if start_btn.draw(50, 150, 'START')==3:
+        if start_btn.draw(50, 150, 'START') == 3:
             return 1
-            show = False
         if settings_btn.draw(50, 200, 'SETTINGS') == 0:
-            if show_settings()==3:
+            if show_settings() == 3:
                 return 1
-                show = False
-            if show_settings()==4:
+            if show_settings() == 4:
                 return 2
-                show = False
-
-
         pygame.display.update()
         clock.tick(60)
 

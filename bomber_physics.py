@@ -3,15 +3,14 @@ import bomber_objects
 
 
 def flight(bomber, bombs):
-    bomber.x += bomber.vx
-    bomber.y += bomber.vy
+    """starts move functions for bombs and bomber"""
+    bomber.move()
     for bomb in bombs:
-        bomb.y += bomb.vy
-        bomb.x += bomb.vx
-        bomb.vy += 0.1
+        bomb.move()
 
 
 def bombcheck(bombs, ground):
+    """checks collisions for array with bombs"""
     todel = []
     bomb_new = []
     for j in range(len(bombs)):
@@ -27,6 +26,7 @@ def bombcheck(bombs, ground):
 
 
 def killcheck(enemies, ground, bombs, bomber):
+    """checks hits"""
     todel_bombs = []
     todel_enemies = []
     enemies_new = []

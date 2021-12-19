@@ -4,6 +4,7 @@ import pygame
 
 
 class Plane:
+    """Players plane with its params"""
     x = 0
     y = 0
     vx = 1
@@ -18,23 +19,32 @@ class Plane:
     img = pygame.transform.scale(img, (60, 20))
 
     def speed_recalculation(self, event):
+        """makes plane to move with the mouse"""
         self.vx = self.v * math.sin(math.atan2(event.pos[0] - self.x, event.pos[1] - self.y))
         self.vy = self.v * math.cos(math.atan2(event.pos[0] - self.x, event.pos[1] - self.y))
 
     def get_real_image(self):
+        """transforms plane picture"""
         img = pygame.transform.rotate(self.img, -self.vx/math.fabs(self.vx + 0.00001)*180*math.atan2(self.vy, self.vx)/math.pi)
         if self.vx < 0:
             img = pygame.transform.flip(img, False, True)
         return img
 
+    def move(self):
+        """moves bomber"""
+        self.x += self.vx
+        self.y += self.vy
+
 
 class Ground:
+    """Ground with picture and collision"""
     points = []
     color = 'GREEN'
     groundline = 75
     groundheight = 25
 
     def new_ground(self, width, height, numofpoints):
+        """Make new variant of ground points"""
         self.points = []
         self.points.append([0, height])
         for i in range(numofpoints):
@@ -43,6 +53,7 @@ class Ground:
         self.points.append([width, height])
 
     def add_enemies(self, amount, numofpoints, enemies):
+        """adds enemies according to the ground points"""
         for i in range(amount):
             pos = random.randint(3, numofpoints - 3)
             newtank = Tank(self.points[pos][0], self.points[pos][1])
@@ -51,6 +62,7 @@ class Ground:
 
 
 class Bomb:
+    """Bombs for plane and tanks"""
     def __init__(self, x, y, vx, vy):
         self.x = x
         self.y = y
@@ -67,6 +79,7 @@ class Bomb:
     img = pygame.transform.scale(img, (60, 20))
 
     def groundcheck(self, ground):
+        """checks collision with ground"""
         detonated = False
         for i in range(len(ground.points) - 1):
             if ground.points[i][0] < self.x < ground.points[i + 1][0] and (
@@ -79,25 +92,35 @@ class Bomb:
         return ground, detonated
 
     def get_real_image(self):
+        """transforms image of bomb"""
         img = pygame.transform.rotate(self.img, -self.vx/math.fabs(self.vx)*180*math.atan2(self.vy, self.vx)/math.pi)
         if self.vx < 0:
             img = pygame.transform.flip(img, False, True)
         return img
 
     def enemycheck(self, enemy):
+        """checks collision with enemies"""
         detonated = math.hypot(self.x - enemy.x, self.y - enemy.y) < enemy.hitbox and not self.enemy
         if detonated:
             enemy.health -= self.damage
         return detonated, enemy
 
     def planecheck(self, plane):
+        """checks collision with plane"""
         detonated = math.hypot(self.x - plane.x, self.y - plane.y) < plane.hitbox and self.enemy
         if detonated:
             plane.health -= self.damage
         return detonated, plane
 
+    def move(self):
+        """moves bombs"""
+        self.y += self.vy
+        self.x += self.vx
+        self.vy += 0.1
+
 
 class Enemy:
+    """mutual base class for all enemies"""
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -108,11 +131,9 @@ class Enemy:
     reloading_time = 100
     cd = 10
     hitbox = 0
-    img = pygame.image.load('Tank.png')
-    img.set_colorkey((255, 255, 255))
-    img = pygame.transform.scale(img, (60, 20))
 
     def moveforward(self, ground):
+        """moves enemy according to the ground"""
         if self.x >= ground.points[len(ground.points) - 1][0] - 1 and self.v > 0:
             self.v = -self.v
         if self.x <= ground.points[0][0] + 1 and self.v < 0:
@@ -144,6 +165,7 @@ class Enemy:
                     flag = 1
 
     def fire(self, plane):
+        """makes shot """
         d = math.hypot(plane.x - self.x, plane.y - self.y)
         shot = Bomb(self.x, self.y, 10*(plane.x - self.x)/d, 10*(plane.y - self.y)/d)
         shot.enemy = True
@@ -151,9 +173,13 @@ class Enemy:
 
 
 class Tank(Enemy):
+    """tank class, inherited from enemies. has its own image"""
     health = 50
     hitbox = 20
     v = 1
+    img = pygame.image.load('Tank.png')
+    img.set_colorkey((255, 255, 255))
+    img = pygame.transform.scale(img, (60, 20))
 
 
 
