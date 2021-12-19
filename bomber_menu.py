@@ -62,6 +62,7 @@ def show_settings():
 
 
 def show_menu():
+    """this function shows menu and returns level of hardness:1 if pushed button start or hard, 2 if very hard."""
     menu_bckgr = pygame.image.load('menu.png')
     start_btn = Button(100, 50, 'start')
     settings_btn = Button(140, 50, 'settings')
